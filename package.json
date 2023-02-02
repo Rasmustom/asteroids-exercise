@@ -1,0 +1,12 @@
+{
+  "name": "asteroids",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "python -m http.server 2222"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
