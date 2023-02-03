@@ -14,4 +14,8 @@ export default {
         context.closePath();
         context.stroke();
     },
+
+    clear() {
+        context.clearRect(0, 0, 1e9, 1e9);
+    },
 };

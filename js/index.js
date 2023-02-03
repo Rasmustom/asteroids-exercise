@@ -1,3 +1,15 @@
-import Canvas from '/js/utility/Canvas.js';
+import MovingObject from './classes/MovingObject.js';
+import Canvas from './utility/Canvas.js';
 
-Canvas.drawCircle({ x: 250, y: 250, radius: 20 });
+const { requestAnimationFrame } = window;
+
+const movingObject = new MovingObject();
+
+function tick() {
+    Canvas.clear();
+    movingObject.move();
+    movingObject.draw();
+    requestAnimationFrame(tick);
+}
+
+tick();
