@@ -1,6 +1,6 @@
-import Canvas from '../utility/Canvas.js';
-import MovingObject from './MovingObject.js';
-import Ship from './ship.js';
+import Canvas from 'utility/Canvas.js';
+import MovingObject from 'classes/MovingObject.js';
+import Ship from 'classes/ship.js';
 
 const MIN_ASTEROIDS = 10;
 const CANVAS_SIZE = 500;
@@ -24,10 +24,6 @@ export default class Game {
 
     tick = () => {
         Canvas.clear();
-        // console.log(this);
-        if (this.asteroids.length > 0) {
-            console.log(this.asteroids.length);
-        }
         this.move();
         this.draw();
         this.removeOutOfBounds();

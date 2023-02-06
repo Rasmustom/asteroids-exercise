@@ -1,4 +1,4 @@
-import Canvas from '../utility/Canvas.js';
+import Canvas from 'utility/Canvas.js';
 
 export default class MovingObject {
     constructor(pos = { x: 0, y: 0 }, vel = { x: 1, y: 1 }) {
