@@ -1,15 +1,4 @@
-import MovingObject from './classes/MovingObject.js';
-import Canvas from './utility/Canvas.js';
+import Game from './classes/Game.js';
 
-const { requestAnimationFrame } = window;
-
-const movingObject = new MovingObject();
-
-function tick() {
-    Canvas.clear();
-    movingObject.move();
-    movingObject.draw();
-    requestAnimationFrame(tick);
-}
-
-tick();
+const game = new Game();
+game.tick();
