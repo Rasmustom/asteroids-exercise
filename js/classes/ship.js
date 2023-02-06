@@ -16,7 +16,12 @@ export default class Ship extends MovingObject {
 
     draw() {
         Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, radius: 20, color: this.color });
-        Canvas.drawCircle({ x: this.pos.x + 20, y: this.pos.y, radius: 10, color: this.color });
+        Canvas.drawCircle({
+            x: this.pos.x + Math.cos(this.direction) * 20,
+            y: this.pos.y + Math.sin(this.direction) * 20,
+            radius: 10,
+            color: this.color,
+        });
     }
 
     move() {
