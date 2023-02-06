@@ -1,6 +1,11 @@
 import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import key from 'keymaster';
+import Game from './Game';
+
+const MAX_VELOCITY = 7;
+const TURNING_SPEED = 0.2;
+const CANVAS_SIZE = 500;
 
 export default class Ship extends MovingObject {
     constructor(pos = { x: 0, y: 0 }, vel = { x: 1, y: 1 }, direction) {
@@ -24,20 +29,54 @@ export default class Ship extends MovingObject {
             this.direction = (this.direction + 2 * Math.PI + 0.1) % (2 * Math.PI);
         }
 
-        console.log(this.direction);
+        const acc = this.getAcceleration();
+        if (Math.abs(this.vel.x + acc.x) < MAX_VELOCITY) this.vel.x = this.vel.x + acc.x;
+        if (Math.abs(this.vel.y + acc.y) < MAX_VELOCITY) this.vel.y = this.vel.y + acc.y;
 
-        this.getAcceleration();
-
-        // console.log(key.getPressedKeyCodes());
+        this.wrap();
+        // console.log(this.vel);
     }
 
     getAcceleration() {
         if (key.isPressed('up')) {
-            this.vel.x = this.vel.x + Math.cos(this.direction) * 0.1;
-            this.vel.y = this.vel.y + Math.sin(this.direction) * 0.1;
-            // console.log(this.vel);
+            return {
+                x: Math.cos(this.direction) * TURNING_SPEED,
+                y: Math.sin(this.direction) * TURNING_SPEED,
+            };
         } else {
             return { x: 0, y: 0 };
+        }
+    }
+
+    outOfBoundsDirection() {
+        if (this.pos.x < 0) {
+            return 'W';
+        } else if (this.pos.x > CANVAS_SIZE) {
+            return 'E';
+        } else if (this.pos.y < 0) {
+            return 'N';
+        } else if (this.pos.y > CANVAS_SIZE) {
+            return 'S';
+        }
+    }
+
+    wrap() {
+        const oob = this.outOfBoundsDirection();
+        switch (oob) {
+            case 'W':
+                this.pos.x = CANVAS_SIZE;
+                break;
+            case 'E':
+                this.pos.x = 0;
+                break;
+            case 'N':
+                this.pos.y = CANVAS_SIZE;
+                break;
+            case 'S':
+                this.pos.y = 0;
+                break;
+            default:
+                break;
         }
     }
 }
