@@ -1,5 +1,6 @@
 import Canvas from '../utility/Canvas.js';
 import MovingObject from './MovingObject.js';
+import Ship from './ship.js';
 
 const MIN_ASTEROIDS = 10;
 const CANVAS_SIZE = 500;
@@ -7,14 +8,18 @@ const CANVAS_SIZE = 500;
 export default class Game {
     constructor() {
         this.asteroids = [];
+
+        this.ship = new Ship({ x: 250, y: 250 }, { x: 0, y: 0 }, 1);
     }
 
     move() {
         this.asteroids.forEach((asteroid) => asteroid.move());
+        this.ship.move();
     }
 
     draw() {
         this.asteroids.forEach((asteroid) => asteroid.draw());
+        this.ship.draw();
     }
 
     tick = () => {
