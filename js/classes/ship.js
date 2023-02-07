@@ -92,4 +92,17 @@ export default class Ship extends MovingObject {
                 break;
         }
     }
+
+    shoot() {
+        const bulletPosition = new Vec2({
+            x: this.pos.x + Math.cos(this.direction) * 20,
+            y: this.pos.y + Math.sin(this.direction) * 20,
+        });
+        const bulletVelocity = new Vec2({
+            x: Math.cos(this.direction) * TURNING_SPEED * 25,
+            y: Math.sin(this.direction) * TURNING_SPEED * 25,
+        });
+        const bullet = new MovingObject(bulletPosition, bulletVelocity);
+        return bullet;
+    }
 }

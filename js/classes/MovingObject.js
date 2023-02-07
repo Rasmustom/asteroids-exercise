@@ -9,13 +9,10 @@ export default class MovingObject {
 
     move() {
         this.pos = this.pos.add(this.vel);
-        // this.pos.x = this.pos.x + this.vel.x;
-        // this.pos.y = this.pos.y + this.vel.y;
-        // console.log(this.pos);
     }
 
-    draw() {
-        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, radius: 20 });
+    draw({ circleRadius = 20, circleColor = 'white' } = {}) {
+        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, color: circleColor, radius: circleRadius });
     }
 
     isOutOfBounds() {

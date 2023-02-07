@@ -2,6 +2,7 @@ import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import Ship from 'classes/ship.js';
 import Vec2 from './VEc2';
+import key from 'keymaster';
 
 const MIN_ASTEROIDS = 10;
 const CANVAS_SIZE = 500;
@@ -9,6 +10,7 @@ const CANVAS_SIZE = 500;
 export default class Game {
     constructor() {
         this.asteroids = [];
+        this.bullets = [];
 
         this.ship = new Ship(new Vec2({ x: 250, y: 250 }), new Vec2({ x: 0, y: 0 }), 1);
     }
@@ -16,11 +18,13 @@ export default class Game {
     move() {
         this.asteroids.forEach((asteroid) => asteroid.move());
         this.ship.move();
+        this.bullets.forEach((bullet) => bullet.move());
     }
 
     draw() {
         this.asteroids.forEach((asteroid) => asteroid.draw());
         this.ship.draw();
+        this.bullets.forEach((bullet) => bullet.draw({ circleRadius: 5, circleColor: 'red' }));
     }
 
     tick = () => {
@@ -29,6 +33,7 @@ export default class Game {
         this.draw();
         this.removeOutOfBounds();
         this.repopulateAsteroids();
+        this.bindHandlers();
         requestAnimationFrame(this.tick);
     };
 
@@ -36,6 +41,7 @@ export default class Game {
 
     removeOutOfBounds() {
         this.asteroids = this.asteroids.filter((asteroid) => !asteroid.isOutOfBounds());
+        this.bullets = this.bullets.filter((bullet) => !bullet.isOutOfBounds());
     }
 
     repopulateAsteroids() {
@@ -76,7 +82,7 @@ export default class Game {
     }
 
     getRandVelocity(coords) {
-        // Need to change in the future, does not work correctly with 0,0, 500,500, 0,500 or 500,0 coords
+        // Possibly need to change in the future, does not work correctly in very rare cases with 0,0, 500,500, 0,500 or 500,0 coords
 
         let randVel = { x: 0, y: 0 };
         if (coords.x === 0) {
@@ -95,5 +101,13 @@ export default class Game {
     getRandInt(min, max, excludeVal = undefined) {
         const randInt = Math.floor(Math.random() * (max - min + 1) + min);
         return randInt === excludeVal ? this.getRandInt(min, max, excludeVal) : randInt;
+    }
+
+    bindHandlers() {
+        if (key.isPressed('space')) {
+            this.bullets = [...this.bullets, this.ship.shoot()];
+        } else {
+            return { x: 0, y: 0 };
+        }
     }
 }
