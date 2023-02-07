@@ -2,13 +2,14 @@ import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import key from 'keymaster';
 import Game from './Game';
+import Vec2 from './VEc2';
 
 const MAX_VELOCITY = 7;
 const TURNING_SPEED = 0.2;
 const CANVAS_SIZE = 500;
 
 export default class Ship extends MovingObject {
-    constructor(pos = { x: 0, y: 0 }, vel = { x: 1, y: 1 }, direction) {
+    constructor(pos = new Vec2({ x: 0, y: 0 }), vel = new Vec2({ x: 1, y: 1 }), direction) {
         super(pos, vel);
         this.direction = 0;
         this.color = 'blue';
@@ -25,8 +26,10 @@ export default class Ship extends MovingObject {
     }
 
     move() {
-        this.pos.x = this.pos.x + this.vel.x;
-        this.pos.y = this.pos.y + this.vel.y;
+        // this.pos.x = this.pos.x + this.vel.x;
+        // this.pos.y = this.pos.y + this.vel.y;
+        this.pos = this.pos.add(this.vel);
+
         // console.log(this.pos);
         if (key.isPressed('left')) {
             this.direction = (this.direction + 2 * Math.PI - 0.1) % (2 * Math.PI);
@@ -35,8 +38,13 @@ export default class Ship extends MovingObject {
         }
 
         const acc = this.getAcceleration();
-        if (Math.abs(this.vel.x + acc.x) < MAX_VELOCITY) this.vel.x = this.vel.x + acc.x;
-        if (Math.abs(this.vel.y + acc.y) < MAX_VELOCITY) this.vel.y = this.vel.y + acc.y;
+        let addedAcc = { x: 0, y: 0 };
+        // if (Math.abs(this.vel.x + acc.x) < MAX_VELOCITY) this.vel.x = this.vel.x + acc.x;
+        // if (Math.abs(this.vel.y + acc.y) < MAX_VELOCITY) this.vel.y = this.vel.y + acc.y;
+        if (Math.abs(this.vel.x + acc.x) < MAX_VELOCITY) addedAcc.x = acc.x;
+        if (Math.abs(this.vel.y + acc.y) < MAX_VELOCITY) addedAcc.y = acc.y;
+
+        this.vel = this.vel.add(addedAcc);
 
         this.wrap();
         // console.log(this.vel);

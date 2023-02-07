@@ -1,6 +1,7 @@
 import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import Ship from 'classes/ship.js';
+import Vec2 from './VEc2';
 
 const MIN_ASTEROIDS = 10;
 const CANVAS_SIZE = 500;
@@ -9,7 +10,7 @@ export default class Game {
     constructor() {
         this.asteroids = [];
 
-        this.ship = new Ship({ x: 250, y: 250 }, { x: 0, y: 0 }, 1);
+        this.ship = new Ship(new Vec2({ x: 250, y: 250 }), new Vec2({ x: 0, y: 0 }), 1);
     }
 
     move() {
@@ -47,8 +48,8 @@ export default class Game {
     }
 
     asteroidFactory() {
-        const randFullCoords = this.getRandCoordinates();
-        const randVel = this.getRandVelocity(randFullCoords);
+        const randFullCoords = new Vec2(this.getRandCoordinates());
+        const randVel = new Vec2(this.getRandVelocity(randFullCoords));
 
         return new MovingObject(randFullCoords, randVel);
     }
