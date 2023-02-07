@@ -23,6 +23,7 @@ export default class Game {
 
     draw() {
         this.asteroids.forEach((asteroid) => asteroid.draw());
+        // this.asteroids.forEach((asteroid) => console.log(asteroid.getCollision()));
         this.ship.draw();
         this.bullets.forEach((bullet) => bullet.draw({ circleRadius: 5, circleColor: 'red' }));
     }
@@ -34,6 +35,9 @@ export default class Game {
         this.removeOutOfBounds();
         this.repopulateAsteroids();
         this.bindHandlers();
+
+        this.checkCollisions();
+        this.handleCollisions();
         requestAnimationFrame(this.tick);
     };
 
@@ -109,5 +113,22 @@ export default class Game {
         } else {
             return { x: 0, y: 0 };
         }
+    }
+
+    checkCollisions() {
+        for (const bullet of this.bullets) {
+            for (const asteroid of this.asteroids) {
+                if (bullet.isCollidedWith(asteroid)) {
+                    bullet.setCollision(true);
+                    asteroid.setCollision(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    handleCollisions() {
+        this.bullets = this.bullets.filter((bullet) => !bullet.getCollision());
+        this.asteroids = this.asteroids.filter((asteroid) => !asteroid.getCollision());
     }
 }

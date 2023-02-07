@@ -5,6 +5,7 @@ export default class MovingObject {
     constructor(pos = new Vec2({ x: 0, y: 0 }), vel = new Vec2({ x: 1, y: 1 })) {
         this.pos = pos;
         this.vel = vel;
+        this.collision = false;
     }
 
     move() {
@@ -12,10 +13,24 @@ export default class MovingObject {
     }
 
     draw({ circleRadius = 20, circleColor = 'white' } = {}) {
+        this.radius = circleRadius;
         Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, color: circleColor, radius: circleRadius });
     }
 
     isOutOfBounds() {
         return this.pos.x < 0 || this.pos.x > 500 || this.pos.y < 0 || this.pos.y > 500;
+    }
+
+    isCollidedWith(otherMovingObject) {
+        const distanceBetweenObjects = Vec2.distance(this.pos, otherMovingObject.pos);
+        return distanceBetweenObjects < this.radius + otherMovingObject.radius;
+    }
+
+    setCollision(collision) {
+        this.collision = collision;
+    }
+
+    getCollision() {
+        return this.collision;
     }
 }

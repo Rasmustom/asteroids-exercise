@@ -10,4 +10,10 @@ export default class Vec2 {
             y: this.y + vector.y,
         });
     }
+
+    static distance(vecA, vecB) {
+        const d1 = Math.pow(vecA.x - vecB.x, 2);
+        const d2 = Math.pow(vecA.y - vecB.y, 2);
+        return Math.sqrt(d1 + d2);
+    }
 }
