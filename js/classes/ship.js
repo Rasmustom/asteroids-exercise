@@ -12,22 +12,20 @@ export default class Ship extends MovingObject {
     constructor(pos = new Vec2({ x: 0, y: 0 }), vel = new Vec2({ x: 1, y: 1 }), direction) {
         super(pos, vel);
         this.direction = 0;
-        this.color = 'blue';
     }
 
-    draw() {
-        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, radius: 20, color: this.color });
+    draw({ circleRadius = 20, circleColor = 'blue' } = {}) {
+        this.radius = circleRadius;
+        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, radius: circleRadius, color: circleColor });
         Canvas.drawCircle({
-            x: this.pos.x + Math.cos(this.direction) * 20,
-            y: this.pos.y + Math.sin(this.direction) * 20,
+            x: this.pos.x + Math.cos(this.direction) * circleRadius,
+            y: this.pos.y + Math.sin(this.direction) * circleRadius,
             radius: 10,
-            color: this.color,
+            color: circleColor,
         });
     }
 
     move() {
-        // this.pos.x = this.pos.x + this.vel.x;
-        // this.pos.y = this.pos.y + this.vel.y;
         this.pos = this.pos.add(this.vel);
 
         // console.log(this.pos);
@@ -39,8 +37,6 @@ export default class Ship extends MovingObject {
 
         const acc = this.getAcceleration();
         let addedAcc = { x: 0, y: 0 };
-        // if (Math.abs(this.vel.x + acc.x) < MAX_VELOCITY) this.vel.x = this.vel.x + acc.x;
-        // if (Math.abs(this.vel.y + acc.y) < MAX_VELOCITY) this.vel.y = this.vel.y + acc.y;
         if (Math.abs(this.vel.x + acc.x) < MAX_VELOCITY) addedAcc.x = acc.x;
         if (Math.abs(this.vel.y + acc.y) < MAX_VELOCITY) addedAcc.y = acc.y;
 

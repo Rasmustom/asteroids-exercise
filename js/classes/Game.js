@@ -4,8 +4,9 @@ import Ship from 'classes/ship.js';
 import Vec2 from './VEc2';
 import key from 'keymaster';
 
-const MIN_ASTEROIDS = 10;
+const MIN_ASTEROIDS = 5;
 const CANVAS_SIZE = 500;
+const MAX_ASTEROID_SPEED = 2;
 
 export default class Game {
     constructor() {
@@ -13,6 +14,7 @@ export default class Game {
         this.bullets = [];
 
         this.ship = new Ship(new Vec2({ x: 250, y: 250 }), new Vec2({ x: 0, y: 0 }), 1);
+        this.start();
     }
 
     move() {
@@ -29,6 +31,7 @@ export default class Game {
     }
 
     tick = () => {
+        if (!this.running) return;
         Canvas.clear();
         this.move();
         this.draw();
@@ -40,8 +43,6 @@ export default class Game {
         this.handleCollisions();
         requestAnimationFrame(this.tick);
     };
-
-    start() {}
 
     removeOutOfBounds() {
         this.asteroids = this.asteroids.filter((asteroid) => !asteroid.isOutOfBounds());
@@ -90,13 +91,25 @@ export default class Game {
 
         let randVel = { x: 0, y: 0 };
         if (coords.x === 0) {
-            randVel = { x: this.getRandInt(1, 5), y: this.getRandInt(-5, 5, 0) };
+            randVel = {
+                x: this.getRandInt(1, MAX_ASTEROID_SPEED),
+                y: this.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+            };
         } else if (coords.x === CANVAS_SIZE) {
-            randVel = { x: this.getRandInt(-5, -1), y: this.getRandInt(-5, 5, 0) };
+            randVel = {
+                x: this.getRandInt(-MAX_ASTEROID_SPEED, -1),
+                y: this.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+            };
         } else if (coords.y === 0) {
-            randVel = { x: this.getRandInt(-5, 5, 0), y: this.getRandInt(1, 5) };
+            randVel = {
+                x: this.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+                y: this.getRandInt(1, MAX_ASTEROID_SPEED),
+            };
         } else {
-            randVel = { x: this.getRandInt(-5, 5, 0), y: this.getRandInt(-5, -1) };
+            randVel = {
+                x: this.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+                y: this.getRandInt(-MAX_ASTEROID_SPEED, -1),
+            };
         }
 
         return randVel;
@@ -116,6 +129,14 @@ export default class Game {
     }
 
     checkCollisions() {
+        // console.log(this.ship.pos);
+        for (const asteroid of this.asteroids) {
+            if (asteroid.isCollidedWith(this.ship)) {
+                this.ship.setCollision(true);
+                return;
+            }
+        }
+
         for (const bullet of this.bullets) {
             for (const asteroid of this.asteroids) {
                 if (bullet.isCollidedWith(asteroid)) {
@@ -128,7 +149,21 @@ export default class Game {
     }
 
     handleCollisions() {
+        if (this.ship.getCollision()) {
+            console.log('coll');
+
+            this.stop();
+        }
         this.bullets = this.bullets.filter((bullet) => !bullet.getCollision());
         this.asteroids = this.asteroids.filter((asteroid) => !asteroid.getCollision());
+    }
+
+    start() {
+        this.running = true;
+        this.tick();
+    }
+
+    stop() {
+        this.running = false;
     }
 }
