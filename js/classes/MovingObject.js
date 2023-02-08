@@ -1,5 +1,5 @@
 import Canvas from 'utility/Canvas.js';
-import Vec2 from './VEc2';
+import Vec2 from './Vsc2.js';
 
 export default class MovingObject {
     constructor(

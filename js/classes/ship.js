@@ -1,8 +1,8 @@
 import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import key from 'keymaster';
-import Game from './Game';
-import Vec2 from './VEc2';
+import Game from './Game.js';
+import Vec2 from './Vec2.js';
 
 const MAX_VELOCITY = 7;
 const TURNING_SPEED = 0.2;

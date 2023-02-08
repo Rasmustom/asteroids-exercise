@@ -1,5 +1,5 @@
-import Game, { MAX_ASTEROID_SPEED } from './Game';
-import MovingObject from './MovingObject';
+import Game, { MAX_ASTEROID_SPEED } from './Game.js';
+import MovingObject from './MovingObject.js';
 
 export default class Asteroid extends MovingObject {
     constructor({ pos, vel, radius, color, generation = 1 }) {

@@ -1,9 +1,9 @@
 import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import Ship from 'classes/ship.js';
-import Vec2 from './VEc2';
+import Vec2 from './Vec2.js';
 import key from 'keymaster';
-import Asteroid from './Asteroid';
+import Asteroid from './Asteroid.js';
 import _ from 'lodash';
 
 const MIN_ASTEROIDS = 5;
