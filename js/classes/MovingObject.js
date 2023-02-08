@@ -2,19 +2,26 @@ import Canvas from 'utility/Canvas.js';
 import Vec2 from './VEc2';
 
 export default class MovingObject {
-    constructor(pos = new Vec2({ x: 0, y: 0 }), vel = new Vec2({ x: 1, y: 1 })) {
+    constructor(
+        pos = new Vec2({ x: 0, y: 0 }),
+        vel = new Vec2({ x: 1, y: 1 }),
+        radius = 20,
+        color = 'white'
+    ) {
         this.pos = pos;
         this.vel = vel;
         this.collision = false;
+        this.radius = radius;
+        this.color = color;
     }
 
     move() {
         this.pos = this.pos.add(this.vel);
     }
 
-    draw({ circleRadius = 20, circleColor = 'white' } = {}) {
-        this.radius = circleRadius;
-        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, color: circleColor, radius: circleRadius });
+    draw() {
+        // this.radius = circleRadius;
+        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, color: this.color, radius: this.radius });
     }
 
     isOutOfBounds() {
@@ -32,5 +39,10 @@ export default class MovingObject {
 
     getCollision() {
         return this.collision;
+    }
+
+    handleCollision() {
+        if (this.collision) return this;
+        return undefined;
     }
 }

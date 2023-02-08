@@ -9,19 +9,25 @@ const TURNING_SPEED = 0.2;
 const CANVAS_SIZE = 500;
 
 export default class Ship extends MovingObject {
-    constructor(pos = new Vec2({ x: 0, y: 0 }), vel = new Vec2({ x: 1, y: 1 }), direction) {
-        super(pos, vel);
-        this.direction = 0;
+    constructor({
+        pos = new Vec2({ x: 0, y: 0 }),
+        vel = new Vec2({ x: 1, y: 1 }),
+        radius = 20,
+        color = 'blue',
+        direction = 0,
+    }) {
+        super(pos, vel, radius, color);
+        this.direction = direction;
     }
 
-    draw({ circleRadius = 20, circleColor = 'blue' } = {}) {
-        this.radius = circleRadius;
-        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, radius: circleRadius, color: circleColor });
+    draw() {
+        // this.radius = circleRadius;
+        Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, radius: this.radius, color: this.color });
         Canvas.drawCircle({
-            x: this.pos.x + Math.cos(this.direction) * circleRadius,
-            y: this.pos.y + Math.sin(this.direction) * circleRadius,
-            radius: 10,
-            color: circleColor,
+            x: this.pos.x + Math.cos(this.direction) * this.radius,
+            y: this.pos.y + Math.sin(this.direction) * this.radius,
+            radius: this.radius / 2,
+            color: this.color,
         });
     }
 
@@ -98,7 +104,7 @@ export default class Ship extends MovingObject {
             x: Math.cos(this.direction) * TURNING_SPEED * 25,
             y: Math.sin(this.direction) * TURNING_SPEED * 25,
         });
-        const bullet = new MovingObject(bulletPosition, bulletVelocity);
+        const bullet = new MovingObject(bulletPosition, bulletVelocity, 5, 'red');
         return bullet;
     }
 }
