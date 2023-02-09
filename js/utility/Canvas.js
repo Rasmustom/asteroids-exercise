@@ -1,4 +1,4 @@
-const canvas = document.getElementById('canvas-stage');
+const canvas = document.querySelector('#canvas-stage');
 const context = canvas.getContext('2d');
 
 const { PI } = Math;

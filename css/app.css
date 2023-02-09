@@ -21,4 +21,22 @@ canvas {
     width: 500px;
     height: 500px;
     border: 2px solid white;
+    z-index: 1;
+}
+
+#start-button {
+    z-index: 2;
+    position: absolute;
+    top: 250;
+    left: 250;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    padding: 15px 32px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+#start-button:hover {
+    background-color: rgb(39, 39, 39);
 }

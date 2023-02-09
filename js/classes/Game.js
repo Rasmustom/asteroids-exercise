@@ -12,7 +12,12 @@ export const MAX_ASTEROID_SPEED = 2;
 
 export default class Game {
     constructor() {
-        this.start();
+        const self = this;
+        this.startButton = document.querySelector('#start-button');
+        this.startButton.addEventListener('click', function (e) {
+            self.start();
+        });
+        // this.start();
     }
 
     move() {
@@ -180,6 +185,7 @@ export default class Game {
     }
 
     start() {
+        this.startButton.style.display = 'none';
         this.running = true;
         this.score = 0;
         this.asteroids = [];
@@ -196,6 +202,8 @@ export default class Game {
     }
 
     stop() {
+        this.startButton.innerText = 'Try again';
+        this.startButton.style.display = '';
         this.running = false;
     }
 }
