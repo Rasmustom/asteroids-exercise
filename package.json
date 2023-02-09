@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "keymaster": "^1.6.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.21"
     
   }
 }
