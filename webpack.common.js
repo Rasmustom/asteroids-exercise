@@ -23,7 +23,12 @@ module.exports = {
         },
     },
     module: {
-        rules: [],
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+        ],
     },
     cache: false,
 };
