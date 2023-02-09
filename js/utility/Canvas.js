@@ -15,6 +15,12 @@ export default {
         context.stroke();
     },
 
+    drawScore(score) {
+        context.font = '30px Arial';
+        context.fillStyle = 'white';
+        context.fillText(`Score: ${score}`, 30, 40);
+    },
+
     clear() {
         context.clearRect(0, 0, 1e9, 1e9);
     },

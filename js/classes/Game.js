@@ -12,16 +12,6 @@ export const MAX_ASTEROID_SPEED = 2;
 
 export default class Game {
     constructor() {
-        this.asteroids = [];
-        this.bullets = [];
-
-        this.ship = new Ship({
-            pos: new Vec2({ x: 250, y: 250 }),
-            vel: new Vec2({ x: 0, y: 0 }),
-            radius: 20,
-            color: 'blue',
-            direction: 0,
-        });
         this.start();
     }
 
@@ -41,6 +31,8 @@ export default class Game {
     tick = () => {
         if (!this.running) return;
         Canvas.clear();
+        Canvas.drawScore(this.score);
+
         this.move();
         this.draw();
         this.removeOutOfBounds();
@@ -168,12 +160,38 @@ export default class Game {
             const asteroidCollision = asteroid.handleCollision();
             return asteroidCollision ? asteroidCollision : asteroid;
         });
+        this.handleScore(notFlatAsteroids);
         this.asteroids = _.flatten(notFlatAsteroids);
         // this.asteroids = notFlatAsteroids.flatMap((asteroid) => asteroid);
     }
 
+    handleScore(asteroids) {
+        //array lenght is almost always 0 or 1. Can be higher if two asteroids get hit in the same tick
+        const destroyedAsteroids = asteroids.filter((asteroid) => Array.isArray(asteroid));
+        destroyedAsteroids.forEach((asteroid) => {
+            if (asteroid.length === 0) {
+                this.score += 100;
+            } else if (asteroid[0].generation === 2) {
+                this.score += 50;
+            } else {
+                this.score += 20;
+            }
+        });
+    }
+
     start() {
         this.running = true;
+        this.score = 0;
+        this.asteroids = [];
+        this.bullets = [];
+        this.ship = new Ship({
+            pos: new Vec2({ x: 250, y: 250 }),
+            vel: new Vec2({ x: 0, y: 0 }),
+            radius: 20,
+            color: 'blue',
+            direction: 0,
+        });
+
         this.tick();
     }
 
