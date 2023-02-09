@@ -1,12 +1,11 @@
 import Canvas from 'utility/Canvas.js';
 import MovingObject from 'classes/MovingObject.js';
 import key from 'keymaster';
-import Game from './Game.js';
 import Vec2 from './Vec2.js';
+import Bullet from './Bullet.js';
 
-const MAX_VELOCITY = 7;
+const MAX_VELOCITY = 5;
 const TURNING_SPEED = 0.2;
-const CANVAS_SIZE = 500;
 
 export default class Ship extends MovingObject {
     constructor({
@@ -50,7 +49,6 @@ export default class Ship extends MovingObject {
 
         this.wrap();
         // console.log(this.vel);
-        console.log(this.pos);
     }
 
     getAcceleration() {
@@ -73,7 +71,7 @@ export default class Ship extends MovingObject {
             x: Math.cos(this.direction) * TURNING_SPEED * 25,
             y: Math.sin(this.direction) * TURNING_SPEED * 25,
         });
-        const bullet = new MovingObject(bulletPosition, bulletVelocity, 5, 'red');
+        const bullet = new Bullet(bulletPosition, bulletVelocity, 5, 'red');
         return bullet;
     }
 }

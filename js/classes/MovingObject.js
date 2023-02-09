@@ -14,6 +14,7 @@ export default class MovingObject {
         this.collision = false;
         this.radius = radius;
         this.color = color;
+        this.hasWrapped = false;
     }
 
     move() {
@@ -30,7 +31,6 @@ export default class MovingObject {
     }
 
     outOfBoundsDirection() {
-        console.log(CANVAS_SIZE);
         if (this.pos.x < 0) {
             return 'W';
         } else if (this.pos.x > CANVAS_SIZE) {
@@ -43,9 +43,8 @@ export default class MovingObject {
     }
 
     wrap() {
-        // console.log('gets here');
         const oob = this.outOfBoundsDirection();
-        console.log(oob);
+        let hasWrapped = true;
         switch (oob) {
             case 'W':
                 this.pos.x = CANVAS_SIZE;
@@ -60,8 +59,10 @@ export default class MovingObject {
                 this.pos.y = 0;
                 break;
             default:
+                hasWrapped = false;
                 break;
         }
+        this.hasWrapped = hasWrapped;
     }
 
     isCollidedWith(otherMovingObject) {

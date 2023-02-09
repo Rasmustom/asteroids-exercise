@@ -20,8 +20,8 @@ export default class Asteroid extends MovingObject {
             if (this.generation < 3) {
                 for (let i = 0; i < 3; i++) {
                     const randVel = {
-                        x: Game.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
-                        y: Game.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+                        x: Game.getRandFloat(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED),
+                        y: Game.getRandFloat(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED),
                     };
                     subAsteroids.push(
                         new Asteroid({

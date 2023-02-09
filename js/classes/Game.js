@@ -7,8 +7,8 @@ import Asteroid from './Asteroid.js';
 import _ from 'lodash';
 
 const MIN_ASTEROIDS = 5;
-export const CANVAS_SIZE = 500;
-export const MAX_ASTEROID_SPEED = 2;
+export const CANVAS_SIZE = document.querySelector('#canvas-stage').width;
+export const MAX_ASTEROID_SPEED = 1;
 
 export default class Game {
     constructor() {
@@ -98,23 +98,23 @@ export default class Game {
         let randVel = { x: 0, y: 0 };
         if (coords.x === 0) {
             randVel = {
-                x: Game.getRandInt(1, MAX_ASTEROID_SPEED),
-                y: Game.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+                x: Game.getRandFloat(0, MAX_ASTEROID_SPEED),
+                y: Game.getRandFloat(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED),
             };
         } else if (coords.x === CANVAS_SIZE) {
             randVel = {
-                x: Game.getRandInt(-MAX_ASTEROID_SPEED, -1),
-                y: Game.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
+                x: Game.getRandFloat(-MAX_ASTEROID_SPEED, 0),
+                y: Game.getRandFloat(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED),
             };
         } else if (coords.y === 0) {
             randVel = {
-                x: Game.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
-                y: Game.getRandInt(1, MAX_ASTEROID_SPEED),
+                x: Game.getRandFloat(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED),
+                y: Game.getRandFloat(0, MAX_ASTEROID_SPEED),
             };
         } else {
             randVel = {
-                x: Game.getRandInt(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED, 0),
-                y: Game.getRandInt(-MAX_ASTEROID_SPEED, -1),
+                x: Game.getRandFloat(-MAX_ASTEROID_SPEED, MAX_ASTEROID_SPEED),
+                y: Game.getRandFloat(-MAX_ASTEROID_SPEED, 0),
             };
         }
 
@@ -126,9 +126,19 @@ export default class Game {
         return randInt === excludeVal ? Game.getRandInt(min, max, excludeVal) : randInt;
     }
 
+    static getRandFloat(min, max) {
+        return Math.random() * (max - min + 1) + min;
+    }
+
     bindHandlers() {
         if (key.isPressed('space')) {
-            this.bullets = [...this.bullets, this.ship.shoot()];
+            if (this.canShoot) {
+                this.bullets = [...this.bullets, this.ship.shoot()];
+                this.canShoot = false;
+                setTimeout(() => {
+                    this.canShoot = true;
+                }, 100);
+            }
         } else {
             return { x: 0, y: 0 };
         }
@@ -197,6 +207,7 @@ export default class Game {
             color: 'blue',
             direction: 0,
         });
+        this.canShoot = true;
 
         this.tick();
     }
