@@ -7,7 +7,7 @@ import Asteroid from './Asteroid.js';
 import _ from 'lodash';
 
 const MIN_ASTEROIDS = 5;
-const CANVAS_SIZE = 500;
+export const CANVAS_SIZE = 500;
 export const MAX_ASTEROID_SPEED = 2;
 
 export default class Game {

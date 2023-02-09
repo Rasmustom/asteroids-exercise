@@ -50,6 +50,7 @@ export default class Ship extends MovingObject {
 
         this.wrap();
         // console.log(this.vel);
+        console.log(this.pos);
     }
 
     getAcceleration() {
@@ -60,38 +61,6 @@ export default class Ship extends MovingObject {
             };
         } else {
             return { x: 0, y: 0 };
-        }
-    }
-
-    outOfBoundsDirection() {
-        if (this.pos.x < 0) {
-            return 'W';
-        } else if (this.pos.x > CANVAS_SIZE) {
-            return 'E';
-        } else if (this.pos.y < 0) {
-            return 'N';
-        } else if (this.pos.y > CANVAS_SIZE) {
-            return 'S';
-        }
-    }
-
-    wrap() {
-        const oob = this.outOfBoundsDirection();
-        switch (oob) {
-            case 'W':
-                this.pos.x = CANVAS_SIZE;
-                break;
-            case 'E':
-                this.pos.x = 0;
-                break;
-            case 'N':
-                this.pos.y = CANVAS_SIZE;
-                break;
-            case 'S':
-                this.pos.y = 0;
-                break;
-            default:
-                break;
         }
     }
 

@@ -8,6 +8,12 @@ export default class Asteroid extends MovingObject {
         this.generation = generation;
     }
 
+    move() {
+        this.pos = this.pos.add(this.vel);
+
+        this.wrap();
+    }
+
     handleCollision() {
         if (this.collision) {
             const subAsteroids = [];
