@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    
+    "html-webpack-plugin": "^5.5.0"
   },
   "dependencies": {
     "keymaster": "^1.6.2",
