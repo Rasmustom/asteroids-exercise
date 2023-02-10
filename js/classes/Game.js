@@ -37,7 +37,6 @@ export default class Game {
 
     draw() {
         this.asteroids.forEach((asteroid) => asteroid.draw());
-        // this.asteroids.forEach((asteroid) => console.log(asteroid.getCollision()));
         this.ship.draw();
         this.bullets.forEach((bullet) => bullet.draw());
     }
@@ -46,6 +45,7 @@ export default class Game {
         if (!this.running) return;
         Canvas.clear();
         Canvas.drawScore(this.score);
+        Canvas.drawLivesLeft(this.lives);
 
         this.move();
         this.draw();
@@ -64,12 +64,10 @@ export default class Game {
     }
 
     repopulateAsteroids() {
-        // if (this.asteroids.length < MIN_ASTEROIDS) {
         const newAsteroids = Array.from({ length: MIN_ASTEROIDS - this.asteroids.length }, () =>
             this.asteroidFactory()
         );
         this.asteroids = [...this.asteroids, ...newAsteroids];
-        // }
     }
 
     asteroidFactory() {
@@ -77,7 +75,6 @@ export default class Game {
         const randVel = new Vec2(this.getRandVelocity(randFullCoords));
 
         return new Asteroid({ pos: randFullCoords, vel: randVel, radius: 20, color: 'white' });
-        // return new MovingObject(randFullCoords, randVel);
     }
 
     getRandCoordinates() {
@@ -155,10 +152,12 @@ export default class Game {
 
     checkCollisions() {
         // console.log(this.ship.pos);
-        for (const asteroid of this.asteroids) {
-            if (asteroid.isCollidedWith(this.ship)) {
-                this.ship.setCollision(true);
-                return;
+        if (!this.ship.invulnerable) {
+            for (const asteroid of this.asteroids) {
+                if (asteroid.isCollidedWith(this.ship)) {
+                    this.ship.setCollision(true);
+                    return;
+                }
             }
         }
 
@@ -175,7 +174,12 @@ export default class Game {
 
     handleCollisions() {
         if (this.ship.getCollision()) {
-            this.stop();
+            this.lives -= 1;
+            if (this.lives === 0) {
+                this.stop();
+            } else {
+                this.respawn(true);
+            }
         }
         this.bullets = this.bullets.filter((bullet) => !bullet.handleCollision());
         // this.asteroids = this.asteroids.filter((asteroid) => !asteroid.getCollision());
@@ -203,20 +207,26 @@ export default class Game {
         });
     }
 
-    start() {
-        this.startButton.style.display = 'none';
-        this.running = true;
-        this.score = 0;
-        this.asteroids = [];
-        this.bullets = [];
+    respawn(isInvulnerable) {
         this.ship = new Ship({
             pos: new Vec2({ x: 250, y: 250 }),
             vel: new Vec2({ x: 0, y: 0 }),
             radius: 20,
             color: 'blue',
             direction: 0,
+            invulnerable: isInvulnerable,
         });
+    }
+
+    start() {
+        this.startButton.style.display = 'none';
+        this.running = true;
+        this.score = 0;
+        this.asteroids = [];
+        this.bullets = [];
+        this.respawn(false);
         this.canShoot = true;
+        this.lives = 3;
 
         this.tick();
     }

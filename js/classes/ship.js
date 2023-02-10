@@ -6,6 +6,7 @@ import Bullet from './Bullet.js';
 
 const MAX_VELOCITY = 5;
 const TURNING_SPEED = 0.2;
+const INVULNERABLE_COLOR = '#6495ED';
 
 export default class Ship extends MovingObject {
     constructor({
@@ -14,9 +15,18 @@ export default class Ship extends MovingObject {
         radius = 20,
         color = 'blue',
         direction = 0,
+        invulnerable = false,
     }) {
         super(pos, vel, radius, color);
         this.direction = direction;
+        this.invulnerable = invulnerable;
+        if (invulnerable) {
+            this.color = INVULNERABLE_COLOR;
+        }
+        setTimeout(() => {
+            this.color = color;
+            this.invulnerable = false;
+        }, 4000);
     }
 
     draw() {

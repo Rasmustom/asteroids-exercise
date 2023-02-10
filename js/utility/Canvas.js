@@ -1,5 +1,7 @@
 const canvas = document.querySelector('#canvas-stage');
 const context = canvas.getContext('2d');
+const canvas2 = document.querySelector('#canvas-score');
+const context2 = canvas2.getContext('2d');
 
 const { PI } = Math;
 
@@ -16,12 +18,21 @@ export default {
     },
 
     drawScore(score) {
-        context.font = '30px Arial';
-        context.fillStyle = 'white';
-        context.fillText(`Score: ${score}`, 30, 40);
+        context2.font = '30px Arial';
+        context2.fillStyle = 'white';
+        context2.textAlign = 'start';
+        context2.fillText(`Score: ${score}`, 30, 30);
+    },
+
+    drawLivesLeft(livesLeft) {
+        context2.font = '30px Arial';
+        context2.fillStyle = 'white';
+        context2.textAlign = 'end';
+        context2.fillText(`Lives left: ${livesLeft}`, 470, 30);
     },
 
     clear() {
         context.clearRect(0, 0, 1e9, 1e9);
+        context2.clearRect(0, 0, 1e9, 1e9);
     },
 };
