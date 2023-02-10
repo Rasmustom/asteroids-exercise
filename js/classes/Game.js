@@ -17,6 +17,15 @@ export default class Game {
         this.startButton.addEventListener('click', function (e) {
             self.start();
         });
+        document.addEventListener('keydown', function (e) {
+            if (!self.running) {
+                e.preventDefault();
+                if (e.code === 'Enter') {
+                    self.start();
+                }
+            }
+        });
+
         // this.start();
     }
 
