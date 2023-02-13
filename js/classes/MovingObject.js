@@ -22,7 +22,6 @@ export default class MovingObject {
     }
 
     draw() {
-        // this.radius = circleRadius;
         Canvas.drawCircle({ x: this.pos.x, y: this.pos.y, color: this.color, radius: this.radius });
     }
 
@@ -62,7 +61,7 @@ export default class MovingObject {
                 hasWrapped = false;
                 break;
         }
-        this.hasWrapped = hasWrapped;
+        if (!this.hasWrapped) this.hasWrapped = hasWrapped;
     }
 
     isCollidedWith(otherMovingObject) {
@@ -79,7 +78,6 @@ export default class MovingObject {
     }
 
     handleCollision() {
-        if (this.collision) return this;
-        return undefined;
+        return this.collision ? this : undefined;
     }
 }

@@ -10,8 +10,8 @@ const INVULNERABLE_COLOR = '#6495ED';
 
 export default class Ship extends MovingObject {
     constructor({
-        pos = new Vec2({ x: 0, y: 0 }),
-        vel = new Vec2({ x: 1, y: 1 }),
+        pos = new Vec2({ x: 250, y: 250 }),
+        vel = new Vec2({ x: 0, y: 0 }),
         radius = 20,
         color = 'blue',
         direction = 0,
@@ -22,11 +22,12 @@ export default class Ship extends MovingObject {
         this.invulnerable = invulnerable;
         if (invulnerable) {
             this.color = INVULNERABLE_COLOR;
+            setTimeout(() => {
+                this.color = color;
+                this.invulnerable = false;
+            }, 4000);
         }
-        setTimeout(() => {
-            this.color = color;
-            this.invulnerable = false;
-        }, 4000);
+        this.canShoot = true;
     }
 
     draw() {
@@ -43,10 +44,10 @@ export default class Ship extends MovingObject {
     move() {
         this.pos = this.pos.add(this.vel);
 
-        // console.log(this.pos);
         if (key.isPressed('left')) {
             this.direction = (this.direction + 2 * Math.PI - 0.1) % (2 * Math.PI);
-        } else if (key.isPressed('right')) {
+        }
+        if (key.isPressed('right')) {
             this.direction = (this.direction + 2 * Math.PI + 0.1) % (2 * Math.PI);
         }
 
@@ -58,7 +59,6 @@ export default class Ship extends MovingObject {
         this.vel = this.vel.add(addedAcc);
 
         this.wrap();
-        // console.log(this.vel);
     }
 
     getAcceleration() {
@@ -72,7 +72,7 @@ export default class Ship extends MovingObject {
         }
     }
 
-    shoot() {
+    bulletFactory() {
         const bulletPosition = new Vec2({
             x: this.pos.x + Math.cos(this.direction) * 20,
             y: this.pos.y + Math.sin(this.direction) * 20,
@@ -83,5 +83,18 @@ export default class Ship extends MovingObject {
         });
         const bullet = new Bullet(bulletPosition, bulletVelocity, 5, 'red');
         return bullet;
+    }
+
+    shoot() {
+        if (key.isPressed('space')) {
+            if (this.canShoot) {
+                // this.bullets = [...this.bullets, this.ship.shoot()];
+                this.canShoot = false;
+                setTimeout(() => {
+                    this.canShoot = true;
+                }, 100);
+                return this.bulletFactory();
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 import MovingObject from 'classes/MovingObject.js';
 
 export default class Bullet extends MovingObject {
-    constructor({ pos, vel, radius, color }) {
+    constructor({}) {
         super(...arguments);
     }
 
